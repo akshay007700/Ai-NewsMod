@@ -7,21 +7,16 @@ const CONFIG = {
             TECH: 'https://newsapi.org/v2/top-headlines?category=technology&apiKey=YOUR_API_KEY',
             WORLD: 'https://newsapi.org/v2/top-headlines?category=general&apiKey=YOUR_API_KEY',
             MOVIES: 'https://newsapi.org/v2/everything?q=movie&apiKey=YOUR_API_KEY'
-        },
-        BACKUP_ENDPOINTS: [
-            'https://gnews.io/api/v4/top-headlines?token=YOUR_TOKEN',
-            'https://api.currentsapi.services/v1/latest-news?apiKey=YOUR_KEY'
-        ]
+        }
     },
 
     // AI Summarization
     AI: {
         ENABLED: true,
-        PROVIDER: 'openai', // openai, gemini, claude
+        PROVIDER: 'openai',
         API_KEY: 'your_ai_api_key_here',
         MODEL: 'gpt-3.5-turbo',
-        MAX_TOKENS: 150,
-        TEMPERATURE: 0.7
+        MAX_TOKENS: 150
     },
 
     // App Settings
@@ -29,42 +24,45 @@ const CONFIG = {
         NAME: 'AI NewsMod',
         VERSION: '1.0.0',
         AUTO_REFRESH: true,
-        REFRESH_INTERVAL: 300000, // 5 minutes
-        MAX_ARTICLES: 50,
-        THEME: 'auto' // light, dark, auto
+        REFRESH_INTERVAL: 300000,
+        THEME: 'auto'
     },
 
-    // Categories
-    CATEGORIES: {
-        TECH: {
-            name: 'Technology',
-            icon: 'fas fa-microchip',
-            color: '#3b82f6',
-            sources: ['TechCrunch', 'The Verge', 'Wired']
+    // Advance Features
+    ADVANCED_FEATURES: {
+        ENABLED: true,
+        AI_PREDICTOR: {
+            UPDATE_INTERVAL: 300000,
+            CONFIDENCE_THRESHOLD: 75
         },
-        WORLD: {
-            name: 'World News',
-            icon: 'fas fa-globe',
-            color: '#10b981',
-            sources: ['BBC', 'CNN', 'Reuters']
+        SENTIMENT_ANALYSIS: {
+            REAL_TIME: true,
+            UPDATE_INTERVAL: 60000
         },
-        MOVIES: {
-            name: 'Movies & Entertainment',
-            icon: 'fas fa-film',
-            color: '#8b5cf6',
-            sources: ['Variety', 'Hollywood Reporter', 'IMDb']
+    VOICE_READER: {
+        ENABLED: true,
+        DEFAULT_SPEED: 1,
+        LANGUAGES: ['en-US', 'en-IN', 'hi-IN']
+    },
+    ANALYTICS: {
+        REAL_TIME: true,
+        DASHBOARD: true
+    }
+}
         }
+        // Add to existing CONFIG object
+     NEWSLETTER: {
+    ENABLED: true,
+    SCHEDULE: {
+        DAILY: '08:00', // 8 AM
+        WEEKLY: '09:00', // 9 AM Monday
+        BREAKING: 'instant' // Immediate
     },
-
-    // Local Storage Keys
-    STORAGE_KEYS: {
-        NEWS_DATA: 'ainewsmod_news_data',
-        SETTINGS: 'ainewsmod_settings',
-        LAST_UPDATED: 'ainewsmod_last_updated'
+    SETTINGS: {
+        MAX_SUBSCRIBERS: 10000,
+        RETENTION_DAYS: 365,
+        AUTO_CLEANUP: true
+    }
+}
     }
 };
-
-// Export for modules
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = CONFIG;
-}
