@@ -39,30 +39,9 @@ const CONFIG = {
             REAL_TIME: true,
             UPDATE_INTERVAL: 60000
         },
-    VOICE_READER: {
-        ENABLED: true,
-        DEFAULT_SPEED: 1,
-        LANGUAGES: ['en-US', 'en-IN', 'hi-IN']
-    },
-    ANALYTICS: {
-        REAL_TIME: true,
-        DASHBOARD: true
-    }
-}
+        VOICE_READER: {
+            ENABLED: true,
+            DEFAULT_SPEED: 1
         }
-        // Add to existing CONFIG object
-     NEWSLETTER: {
-    ENABLED: true,
-    SCHEDULE: {
-        DAILY: '08:00', // 8 AM
-        WEEKLY: '09:00', // 9 AM Monday
-        BREAKING: 'instant' // Immediate
-    },
-    SETTINGS: {
-        MAX_SUBSCRIBERS: 10000,
-        RETENTION_DAYS: 365,
-        AUTO_CLEANUP: true
-    }
-}
     }
 };

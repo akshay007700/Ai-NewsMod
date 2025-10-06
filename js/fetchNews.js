@@ -3,118 +3,33 @@ class NewsFetcher {
     constructor() {
         this.cache = new Map();
         this.isOnline = navigator.onLine;
-        this.setupEventListeners();
     }
 
-    setupEventListeners() {
-        window.addEventListener('online', () => this.handleOnline());
-        window.addEventListener('offline', () => this.handleOffline());
-    }
-
-    handleOnline() {
-        this.isOnline = true;
-        console.log('📡 Connection restored - resuming news updates');
-        this.notifyUser('Connection restored', 'success');
-    }
-
-    handleOffline() {
-        this.isOnline = false;
-        console.log('⚠️ Connection lost - using cached news');
-        this.notifyUser('Using cached news - offline mode', 'warning');
-    }
-
-    notifyUser(message, type = 'info') {
-        // Create toast notification
-        const toast = document.createElement('div');
-        toast.className = `toast toast-${type}`;
-        toast.innerHTML = `
-            <i class="fas fa-${type === 'success' ? 'check' : 'info'}"></i>
-            <span>${message}</span>
-        `;
-        document.body.appendChild(toast);
-
-        setTimeout(() => toast.remove(), 3000);
-    }
-
-    // Main news fetching function
     async fetchNews(category = 'all') {
         try {
-            // Show loading state
             this.showLoading(true);
-
-            // Check cache first
-            const cached = this.getCachedNews(category);
-            if (cached && this.shouldUseCache()) {
-                console.log('📦 Using cached news data');
-                return cached;
-            }
-
-            // Fetch fresh news
-            const newsData = await this.fetchFromMultipleSources(category);
             
-            // Cache the results
-            this.cacheNews(category, newsData);
+            // Demo news data - real implementation mein API se aayega
+            const newsData = this.generateDemoNews(category);
             
-            // Update last updated time
             this.updateLastUpdated();
-            
             return newsData;
 
         } catch (error) {
-            console.error('❌ Error fetching news:', error);
+            console.error('Error fetching news:', error);
             return this.getFallbackNews(category);
         } finally {
             this.showLoading(false);
         }
     }
 
-    async fetchFromMultipleSources(category) {
-        const sources = [
-            this.fetchFromAPI(category),
-            this.fetchFromRSS(category),
-            this.fetchFromBackup(category)
-        ];
-
-        // Race between sources with timeout
-        const timeoutPromise = new Promise((_, reject) => 
-            setTimeout(() => reject(new Error('Request timeout')), 10000)
-        );
-
-        try {
-            const news = await Promise.race([
-                Promise.any(sources),
-                timeoutPromise
-            ]);
-            return news;
-        } catch (error) {
-            return this.generateDemoNews(category);
-        }
-    }
-
-    async fetchFromAPI(category) {
-        // In a real implementation, this would call actual news APIs
-        // For demo, we'll use generated news
-        return this.generateDemoNews(category);
-    }
-
     generateDemoNews(category) {
-        const categories = {
-            tech: this.generateTechNews(),
-            world: this.generateWorldNews(),
-            movies: this.generateMovieNews(),
-            all: [...this.generateTechNews(), ...this.generateWorldNews(), ...this.generateMovieNews()]
-        };
-
-        return categories[category] || categories.all;
-    }
-
-    generateTechNews() {
-        return [
+        const allNews = [
             {
-                id: this.generateId(),
+                id: '1',
                 title: "OpenAI Launches GPT-5 With Multimodal Capabilities",
                 summary: "The new AI model can process text, images, and audio simultaneously, revolutionizing human-computer interaction.",
-                content: "OpenAI has officially launched GPT-5, featuring advanced multimodal capabilities that allow it to understand and generate content across different media types.",
+                content: "OpenAI has officially launched GPT-5, featuring advanced multimodal capabilities that allow it to understand and generate content across different media types. This breakthrough represents a significant leap in artificial intelligence technology.",
                 category: "tech",
                 source: "AI NewsMod",
                 author: "AI Reporter",
@@ -128,7 +43,7 @@ class NewsFetcher {
                 isTrending: true
             },
             {
-                id: this.generateId(),
+                id: '2',
                 title: "Quantum Computer Breaks Encryption Record",
                 summary: "Researchers achieve breakthrough in quantum computing, potentially transforming cybersecurity landscape.",
                 content: "A team of scientists has demonstrated quantum supremacy in breaking traditional encryption methods faster than ever before.",
@@ -143,21 +58,16 @@ class NewsFetcher {
                 sentiment: "neutral",
                 isBreaking: false,
                 isTrending: true
-            }
-        ];
-    }
-
-    generateWorldNews() {
-        return [
+            },
             {
-                id: this.generateId(),
+                id: '3',
                 title: "Global Climate Summit Reaches Historic Agreement",
                 summary: "World leaders commit to ambitious carbon neutrality targets by 2040 in landmark environmental pact.",
                 content: "The international community has united behind a comprehensive plan to combat climate change with binding commitments.",
                 category: "world",
                 source: "Global News Network",
                 author: "Environmental Desk",
-                image: "https://images.unsplash.com/photo-1569163139394-de44cb54d521?w=400",
+                image: "https://images.unsplash.com/photo-1569163139394-de44e2b6e7b1?w=400",
                 url: "#world-1",
                 publishedAt: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
                 readTime: "4 min",
@@ -165,14 +75,9 @@ class NewsFetcher {
                 sentiment: "positive",
                 isBreaking: true,
                 isTrending: false
-            }
-        ];
-    }
-
-    generateMovieNews() {
-        return [
+            },
             {
-                id: this.generateId(),
+                id: '4',
                 title: "Marvel Announces Phase 6 With AI-Generated Scripts",
                 summary: "Studio reveals ambitious plan incorporating artificial intelligence in screenplay development process.",
                 content: "Marvel Studios is pushing technological boundaries by integrating AI tools in their creative writing process.",
@@ -187,60 +92,50 @@ class NewsFetcher {
                 sentiment: "neutral",
                 isBreaking: false,
                 isTrending: true
+            },
+            {
+                id: '5',
+                title: "Breakthrough in Renewable Energy Storage",
+                summary: "New battery technology promises to solve renewable energy storage challenges.",
+                content: "Scientists develop innovative battery design that could revolutionize how we store solar and wind energy.",
+                category: "tech",
+                source: "Science Daily",
+                author: "Research Team",
+                image: "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=400",
+                url: "#tech-3",
+                publishedAt: new Date(Date.now() - 45 * 60 * 1000).toISOString(),
+                readTime: "3 min",
+                tags: ["Energy", "Innovation", "Environment"],
+                sentiment: "positive",
+                isBreaking: false,
+                isTrending: true
             }
         ];
-    }
 
-    getCachedNews(category) {
-        const cached = localStorage.getItem(`news_${category}`);
-        if (cached) {
-            const data = JSON.parse(cached);
-            // Check if cache is still valid (15 minutes)
-            if (Date.now() - data.timestamp < 15 * 60 * 1000) {
-                return data.news;
-            }
-        }
-        return null;
-    }
-
-    cacheNews(category, news) {
-        const cacheData = {
-            news,
-            timestamp: Date.now()
-        };
-        localStorage.setItem(`news_${category}`, JSON.stringify(cacheData));
-    }
-
-    shouldUseCache() {
-        return !this.isOnline || document.visibilityState === 'hidden';
+        if (category === 'all') return allNews;
+        return allNews.filter(item => item.category === category);
     }
 
     getFallbackNews(category) {
-        console.log('🔄 Using fallback news data');
-        return this.generateDemoNews(category).slice(0, 5);
+        return this.generateDemoNews(category).slice(0, 3);
     }
 
     updateLastUpdated() {
         const now = new Date();
-        document.getElementById('last-updated').textContent = 
-            now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const element = document.getElementById('last-updated');
+        if (element) {
+            element.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
     }
 
     showLoading(show) {
         const spinner = document.getElementById('loading-spinner');
         const container = document.getElementById('news-container');
         
-        if (show) {
-            spinner.classList.remove('hidden');
-            container.classList.add('hidden');
-        } else {
-            spinner.classList.add('hidden');
-            container.classList.remove('hidden');
+        if (spinner && container) {
+            spinner.classList.toggle('hidden', !show);
+            container.classList.toggle('hidden', show);
         }
-    }
-
-    generateId() {
-        return 'news_' + Math.random().toString(36).substr(2, 9);
     }
 }
 
