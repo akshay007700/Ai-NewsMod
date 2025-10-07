@@ -23,6 +23,15 @@
             document.documentElement.setAttribute('data-theme', event.matches ? 'dark' : 'light');
         }
     });
+// 🌙 Universal Theme Loader – Auto applies dark/light theme to all pages
+(function() {
+  const savedTheme = localStorage.getItem('theme') || 'auto';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  if (savedTheme === 'auto') {
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+  }
+})();
 
     // Debug message (optional)
     console.log(`🌓 Theme Applied: ${document.documentElement.getAttribute('data-theme')}`);
