@@ -47,6 +47,19 @@
 
         <div id="news-container" class="news-grid"></div>
     </main>
+<script>
+// 🌙 Universal Dark/Light Theme Loader
+(function() {
+  const savedTheme = localStorage.getItem('theme') || 'auto';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+
+  // Optional: auto adjust if "auto" selected
+  if (savedTheme === 'auto') {
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+  }
+})();
+</script>
 
     <footer class="footer">
         <div class="container">
@@ -71,5 +84,7 @@
     <script src="js/summarizeAI.js"></script>
     <script src="js/renderNews.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/universalTheme.js"></script>
+
 </body>
 </html>
