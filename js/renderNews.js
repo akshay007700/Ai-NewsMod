@@ -148,14 +148,17 @@ class NewsRenderer {
             align-items: center; z-index: 10000;
         `;
         
-        modal.innerHTML = `
-            <div style="background: white; padding: 2rem; border-radius: 12px; max-width: 600px; max-height: 80vh; overflow-y: auto;">
-                <h2>${newsItem.title}</h2>
-                <p><strong>Summary:</strong> ${newsItem.summary}</p>
-                <p><strong>Content:</strong> ${newsItem.content}</p>
-                <button onclick="this.closest('.news-modal').remove()" style="margin-top: 1rem; padding: 0.5rem 1rem; background: #2563eb; color: white; border: none; border-radius: 6px; cursor: pointer;">Close</button>
-            </div>
-        `;
+       modal.innerHTML = `
+  <div class="news-modal-content">
+      <h2>${newsItem.title}</h2>
+      <p><strong>Summary:</strong> ${newsItem.summary}</p>
+      <p><strong>Content:</strong> ${newsItem.content}</p>
+      <button onclick="this.closest('.news-modal').remove()" class="close-modal-btn">
+          <i class="fas fa-times"></i> Close
+      </button>
+  </div>
+`;
+
         
         document.body.appendChild(modal);
         

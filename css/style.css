@@ -1826,3 +1826,26 @@ input:checked + .slider:before {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
 }
+.news-modal-content {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow);
+}
+
+.close-modal-btn {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.close-modal-btn:hover {
+  background: var(--secondary-color);
+}

@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
     // Theme Toggle
-   // Theme Toggle
+ // Theme Toggle
 const themeToggle = document.getElementById('theme-toggle');
 if (themeToggle) {
     const savedTheme = localStorage.getItem('theme') || 'auto';
@@ -23,12 +23,12 @@ if (themeToggle) {
         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
         document.documentElement.setAttribute('data-theme', newTheme);
         localStorage.setItem('theme', newTheme);
-        
-            // Update icon
-            const icon = this.querySelector('i');
-            icon.className = isDark ? 'fas fa-moon' : 'fas fa-sun';
-        });
-    }
+
+        const icon = this.querySelector('i');
+        icon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    });
+}
+
 
     // Refresh Button
     const refreshBtn = document.getElementById('refresh-btn');
