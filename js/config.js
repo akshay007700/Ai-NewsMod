@@ -27,6 +27,29 @@ const CONFIG = {
         REFRESH_INTERVAL: 300000,
         THEME: 'auto'
     },
+// Add to CONFIG object
+REAL_AI: {
+    ENABLED: true,
+    PROVIDERS: {
+        OPENAI: {
+            API_KEY: 'your-openai-api-key-here',
+            MODEL: 'gpt-3.5-turbo',
+            MAX_TOKENS: 500
+        },
+        GEMINI: {
+            API_KEY: 'your-gemini-api-key-here', 
+            MODEL: 'gemini-pro'
+        }
+    },
+    FEATURES: {
+        SUMMARIZATION: true,
+        SENTIMENT_ANALYSIS: true,
+        TRANSLATION: true,
+        IMAGE_GENERATION: true,
+        NEWS_GENERATION: true,
+        AI_ASSISTANT: true
+    }
+}
 
     // Advance Features
     ADVANCED_FEATURES: {

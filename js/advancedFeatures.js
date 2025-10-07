@@ -18,7 +18,7 @@ class AdvancedFeatures {
     // AI News Prediction Engine
     initNewsPredictor() {
         this.updatePredictions();
-        setInterval(() => this.updatePredictions(), 300000); // 5 minutes
+        setInterval(() => this.updatePredictions(), 300000);
     }
 
     async updatePredictions() {
@@ -27,7 +27,6 @@ class AdvancedFeatures {
     }
 
     async analyzeTrends() {
-        // Simulate AI trend analysis
         return [
             {
                 topic: "AI Regulation",
@@ -66,7 +65,7 @@ class AdvancedFeatures {
     // Real-time Sentiment Analysis
     initSentimentAnalysis() {
         this.updateSentiment();
-        setInterval(() => this.updateSentiment(), 60000); // 1 minute
+        setInterval(() => this.updateSentiment(), 60000);
     }
 
     async updateSentiment() {
@@ -75,7 +74,6 @@ class AdvancedFeatures {
     }
 
     async calculateSentiment() {
-        // Get current news and analyze sentiment
         const news = await newsFetcher.fetchNews('all');
         let positive = 0, neutral = 0, negative = 0;
 
@@ -111,7 +109,7 @@ class AdvancedFeatures {
     // Breaking News Ticker
     initBreakingTicker() {
         this.updateTicker();
-        setInterval(() => this.updateTicker(), 30000); // 30 seconds
+        setInterval(() => this.updateTicker(), 30000);
     }
 
     async updateTicker() {
@@ -141,15 +139,12 @@ class AdvancedFeatures {
         if (voiceBtn && this.voiceSynth) {
             voiceBtn.addEventListener('click', () => this.toggleVoiceReading());
             
-            // Speed controls
             document.querySelectorAll('.voice-control').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     this.setVoiceSpeed(parseFloat(e.target.dataset.speed));
                     e.stopPropagation();
                 });
             });
-        } else {
-            console.log('Voice synthesis not supported');
         }
     }
 

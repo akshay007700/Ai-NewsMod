@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - AI NewsMod</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-robot"></i>
+                <h1>AI NewsMod</h1>
+                <span class="beta-badge">SETTINGS</span>
+            </div>
+            <nav class="nav">
+                <a href="index.html" class="nav-link"><i class="fas fa-home"></i> Home</a>
+                <a href="world.html" class="nav-link"><i class="fas fa-globe"></i> World</a>
+                <a href="tech.html" class="nav-link"><i class="fas fa-microchip"></i> Tech</a>
+                <a href="movies.html" class="nav-link"><i class="fas fa-film"></i> Movies</a>
+                <a href="newsletter.html" class="nav-link"><i class="fas fa-newspaper"></i> Newsletter</a>
+                <a href="settings.html" class="nav-link active"><i class="fas fa-cog"></i> Settings</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main container">
+        <div class="page-header">
+            <h1><i class="fas fa-sliders-h"></i> Settings & Preferences</h1>
+            <p>Customize your AI NewsMod experience</p>
+        </div>
+
+        <div class="settings-container">
+            <!-- Sidebar Navigation -->
+            <div class="settings-sidebar">
+                <div class="sidebar-section">
+                    <h3>Preferences</h3>
+                    <button class="sidebar-btn active" data-tab="appearance">
+                        <i class="fas fa-palette"></i> Appearance
+                    </button>
+                    <button class="sidebar-btn" data-tab="content">
+                        <i class="fas fa-newspaper"></i> Content
+                    </button>
+                    <button class="sidebar-btn" data-tab="notifications">
+                        <i class="fas fa-bell"></i> Notifications
+                    </button>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h3>AI Features</h3>
+                    <button class="sidebar-btn" data-tab="ai-settings">
+                        <i class="fas fa-robot"></i> AI Settings
+                    </button>
+                    <button class="sidebar-btn" data-tab="privacy">
+                        <i class="fas fa-shield-alt"></i> Privacy
+                    </button>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3>Account</h3>
+                    <button class="sidebar-btn" data-tab="account">
+                        <i class="fas fa-user"></i> Account
+                    </button>
+                    <button class="sidebar-btn" data-tab="data">
+                        <i class="fas fa-database"></i> Data & Storage
+                    </button>
+                </div>
+            </div>
+
+            <!-- Settings Content -->
+            <div class="settings-content">
+                <!-- Appearance Tab -->
+                <div class="settings-tab active" id="appearance-tab">
+                    <h2><i class="fas fa-palette"></i> Appearance Settings</h2>
+                    
+                    <div class="setting-group">
+                        <h3>Theme</h3>
+                        <div class="theme-options">
+                            <label class="theme-option">
+                                <input type="radio" name="theme" value="light" checked>
+                                <div class="theme-preview light-theme">
+                                    <i class="fas fa-sun"></i>
+                                    <span>Light</span>
+                                </div>
+                            </label>
+                            <label class="theme-option">
+                                <input type="radio" name="theme" value="dark">
+                                <div class="theme-preview dark-theme">
+                                    <i class="fas fa-moon"></i>
+                                    <span>Dark</span>
+                                </div>
+                            </label>
+                            <label class="theme-option">
+                                <input type="radio" name="theme" value="auto">
+                                <div class="theme-preview auto-theme">
+                                    <i class="fas fa-adjust"></i>
+                                    <span>Auto</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="setting-group">
+                        <h3>Layout</h3>
+                        <div class="layout-options">
+                            <label class="layout-option">
+                                <input type="radio" name="layout" value="grid" checked>
+                                <div class="layout-preview grid-layout">
+                                    <div class="preview-box"></div>
+                                    <div class="preview-box"></div>
+                                    <div class="preview-box"></div>
+                                    <div class="preview-box"></div>
+                                    <span>Grid View</span>
+                                </div>
+                            </label>
+                            <label class="layout-option">
+                                <input type="radio" name="layout" value="list">
+                                <div class="layout-preview list-layout">
+                                    <div class="preview-line"></div>
+                                    <div class="preview-line"></div>
+                                    <div class="preview-line"></div>
+                                    <span>List View</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="setting-group">
+                        <h3>Font Size</h3>
+                        <div class="font-size-control">
+                            <button class="font-btn small" data-size="small">A</button>
+                            <button class="font-btn medium active" data-size="medium">A</button>
+                            <button class="font-btn large" data-size="large">A</button>
+                            <button class="font-btn xlarge" data-size="xlarge">A</button>
+                        </div>
+                    </div>
+
+                    <div class="setting-group">
+                        <h3>Animation</h3>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="animations" checked>
+                            <span class="slider"></span>
+                            <span class="toggle-label">Enable animations</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Content Tab -->
+                <div class="settings-tab" id="content-tab">
+                    <h2><i class="fas fa-newspaper"></i> Content Preferences</h2>
+                    
+                    <div class="setting-group">
+                        <h3>News Categories</h3>
+                        <div class="category-options">
+                            <label class="category-option">
+                                <input type="checkbox" name="categories" value="technology" checked>
+                                <i class="fas fa-microchip"></i>
+                                <span>Technology</span>
+                            </label>
+                            <label class="category-option">
+                                <input type="checkbox" name="categories" value="world" checked>
+                                <i class="fas fa-globe"></i>
+                                <span>World News</span>
+                            </label>
+                            <label class="category-option">
+                                <input type="checkbox" name="categories" value="politics">
+                                <i class="fas fa-landmark"></i>
+                                <span>Politics</span>
+                            </label>
+                            <label class="category-option">
+                                <input type="checkbox" name="categories" value="business">
+                                <i class="fas fa-chart-line"></i>
+                                <span>Business</span>
+                            </label>
+                            <label class="category-option">
+                                <input type="checkbox" name="categories" value="entertainment" checked>
+                                <i class="fas fa-film"></i>
+                                <span>Entertainment</span>
+                            </label>
+                            <label class="category-option">
+                                <input type="checkbox" name="categories" value="sports">
+                                <i class="fas fa-running"></i>
+                                <span>Sports</span>
+                            </label>
+                            <label class="category-option">
+                                <input type="checkbox" name="categories" value="science">
+                                <i class="fas fa-flask"></i>
+                                <span>Science</span>
+                            </label>
+                            <label class="category-option">
+                                <input type="checkbox" name="categories" value="health">
+                                <i class="fas fa-heartbeat"></i>
+                                <span>Health</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="setting-group">
+                        <h3>Content Filters</h3>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="breaking-news" checked>
+                            <span class="slider"></span>
+                            <span class="toggle-label">Show breaking news alerts</span>
+                        </label>
+                        
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="trending-topics" checked>
+                            <span class="slider"></span>
+                            <span class="toggle-label">Show trending topics</span>
+                        </label>
+                        
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="ai-summaries" checked>
+                            <span class="slider"></span>
+                            <span class="toggle-label">Enable AI summaries</span>
+                        </label>
+                    </div>
+
+                    <div class="setting-group">
+                        <h3>Reading Preferences</h3>
+                        <div class="preference-options">
+                            <label class="preference-option">
+                                <span>News per page</span>
+                                <select id="news-per-page">
+                                    <option value="10">10 articles</option>
+                                    <option value="20" selected>20 articles</option>
+                                    <option value="30">30 articles</option>
+                                    <option value="50">50 articles</option>
+                                </select>
+                            </label>
+                            
+                            <label class="preference-option">
+                                <span>Auto-refresh interval</span>
+                                <select id="refresh-interval">
+                                    <option value="300000">5 minutes</option>
+                                    <option value="600000" selected>10 minutes</option>
+                                    <option value="1800000">30 minutes</option>
+                                    <option value="3600000">1 hour</option>
+                                    <option value="0">Never</option>
+                                </select>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notifications Tab -->
+                <div class="settings-tab" id="notifications-tab">
+                    <h2><i class="fas fa-bell"></i> Notification Settings</h2>
+                    
+                    <div class="setting-group">
+                        <h3>Push Notifications</h3>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="push-notifications">
+                            <span class="slider"></span>
+                            <span class="toggle-label">Enable push notifications</span>
+                        </label>
+                        <p class="setting-description">Receive alerts for breaking news and important updates</p>
+                    </div>
+
+                    <div class="setting-group">
+                        <h3>Notification Types</h3>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="breaking-alerts" checked>
+                            <span class="slider"></span>
+                            <span class="toggle-label">Breaking news alerts</span>
+                        </label>
+                        
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="trending-alerts">
+                            <span class="slider"></span>
+                            <span class="toggle-label">Trending topics</span>
+                        </label>
+                        
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="personalized-alerts">
+                            <span class="slider"></span>
+                            <span class="toggle-label">Personalized news</span>
+                        </label>
+                    </div>
+
+                    <div class="setting-group">
+                        <h3>Notification Schedule</h3>
+                        <div class="schedule-options">
+                            <label class="schedule-option">
+                                <span>Quiet hours</span>
+                                <div class="time-inputs">
+                                    <input type="time" id="quiet-start" value="22:00">
+                                    <span>to</span>
+                                    <input type="time" id="quiet-end" value="07:00">
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="setting-group">
+                        <h3>Sound & Vibration</h3>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="notification-sound" checked>
+                            <span class="slider"></span>
+                            <span class="toggle-label">Play sound</span>
+                        </label>
+                        
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="notification-vibration">
+                            <span class="slider"></span>
+                            <span class="toggle-label">Vibrate</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- AI Settings Tab -->
+                <div class="settings-tab" id="ai-settings-tab">
+                    <h2><i class="fas fa-robot"></i> AI Features Settings</h2>
+                    
+                    <div class="setting-group">
+                        <h3>AI Assistant</h3>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="ai-assistant" checked>
+                            <span class="slider"></span>
+                            <span class="toggle-label">Enable AI News Assistant</span>
+                        </label>
+                        <p class="setting-description">Get AI-powered news recommendations and summaries</p>
+                    </div>
+
+                    <div class="setting-group">
+                        <h3>AI Summarization</h3>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="ai-summarization" checked>
+                            <span class="slider"></span>
+                            <span class="toggle-label">Generate AI summaries</span>
+                        </label>
+                        
+                        <div class="summary-options">
+                            <label class="radio-option">
+                                <input type="radio" name="summary-length" value="short" checked>
+                                <span class="radio-checkmark"></span>
+                                <span>Short summaries (1-2 sentences)</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="summary-length" value="medium">
+                                <span class="radio-checkmark"></span>
+                                <span>Medium summaries (2-3 sentences)</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="summary-length" value="detailed">
+                                <span class="radio-checkmark"></span>
+                                <span>Detailed summaries (3-4 sentences)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="setting-group">
+                        <h3>AI Predictions</h3>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="ai-predictions" checked>
+                            <span class="slider"></span>
+                            <span class="toggle-label">Show trend predictions</span>
+                        </label>
+                        <p class="setting-description">Get AI-powered predictions about upcoming news trends</p>
+                    </div>
+
+                    <div class="setting-group">
+                        <h3>Voice Features</h3>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="voice-news" checked>
+                            <span class="slider"></span>
+                            <span class="toggle-label">Enable voice news reader</span>
+                        </label>
+                        
+                        <div class="voice-options">
+                            <label class="preference-option">
+                                <span>Voice speed</span>
+                                <select id="voice-speed">
+                                    <option value="0.75">Slow</option>
+                                    <option value="1" selected>Normal</option>
+                                    <option value="1.25">Fast</option>
+                                    <option value="1.5">Very Fast</option>
+                                </select>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="setting-group">
+                        <h3>Multi-language Support</h3>
+                        <label class="preference-option">
+                            <span>Preferred language</span>
+                            <select id="preferred-language">
+                                <option value="en" selected>English</option>
+                                <option value="hi">Hindi</option>
+                                <option value="es">Spanish</option>
+                                <option value="fr">French</option>
+                                <option value="de">German</option>
+                                <option value="zh">Chinese</option>
+                                <option value="ar">Arabic</option>
+                            </select>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Privacy Tab -->
+                <div class="settings-tab" id="privacy-tab">
+                    <h2><i class="fas fa-shield-alt"></i> Privacy & Security</h2>
+                    
+                    <div class="setting-group">
+                        <h3>Data Collection</h3>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="analytics-tracking" checked>
+                            <span class="slider"></span>
+                            <span class="toggle-label">Allow analytics tracking</span>
+                        </label>
+                        <p class="setting-description">Help us improve by sharing usage data (anonymous)</p>
+                    </div>
+
+                    <div class="setting-group">
+                        <h3>Personalization</h3>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="personalized-ads" checked>
+                            <span class="slider"></span>
+                            <span class="toggle-label">Personalized content</span>
+                        </label>
+                        <p class="setting-description">Show news based on your reading history and preferences</p>
+                    </div>
+
+                    <div class="setting-group">
+                        <h3>Search History</h3>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="save-search-history" checked>
+                            <span class="slider"></span>
+                            <span class="toggle-label">Save search history</span>
+                        </label>
+                        
+                        <div class="privacy-actions">
+                            <button class="privacy-btn" id="clear-history">
+                                <i class="fas fa-trash"></i> Clear Search History
+                            </button>
+                            <button class="privacy-btn" id="export-data">
+                                <i class="fas fa-download"></i> Export My Data
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="setting-group">
+                        <h3>Cookies</h3>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="essential-cookies" checked disabled>
+                            <span class="slider"></span>
+                            <span class="toggle-label">Essential cookies</span>
+                        </label>
+                        
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="analytics-cookies" checked>
+                            <span class="slider"></span>
+                            <span class="toggle-label">Analytics cookies</span>
+                        </label>
+                        
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="marketing-cookies">
+                            <span class="slider"></span>
+                            <span class="toggle-label">Marketing cookies</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Account Tab -->
+                <div class="settings-tab" id="account-tab">
+                    <h2><i class="fas fa-user"></i> Account Settings</h2>
+                    
+                    <div class="setting-group">
+                        <h3>Profile Information</h3>
+                        <div class="profile-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="display-name">Display Name</label>
+                                    <input type="text" id="display-name" placeholder="Enter your display name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email Address</label>
+                                    <input type="email" id="email" placeholder="your@email.com">
+                                </div>
+                            </div>
+                            <button class="save-btn">
+                                <i class="fas fa-save"></i> Save Changes
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="setting-group">
+                        <h3>Password</h3>
+                        <div class="password-form">
+                            <div class="form-group">
+                                <label for="current-password">Current Password</label>
+                                <input type="password" id="current-password" placeholder="Enter current password">
+                            </div>
+                            <div class="form-group">
+                                <label for="new-password">New Password</label>
+                                <input type="password" id="new-password" placeholder="Enter new password">
+                            </div>
+                            <div class="form-group">
+                                <label for="confirm-password">Confirm Password</label>
+                                <input type="password" id="confirm-password" placeholder="Confirm new password">
+                            </div>
+                            <button class="save-btn">
+                                <i class="fas fa-key"></i> Update Password
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="setting-group">
+                        <h3>Account Actions</h3>
+                        <div class="account-actions">
+                            <button class="action-btn danger" id="delete-account">
+                                <i class="fas fa-trash"></i> Delete Account
+                            </button>
+                            <button class="action-btn" id="logout-all">
+                                <i class="fas fa-sign-out-alt"></i> Logout All Devices
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data & Storage Tab -->
+                <div class="settings-tab" id="data-tab">
+                    <h2><i class="fas fa-database"></i> Data & Storage</h2>
+                    
+                    <div class="setting-group">
+                        <h3>Storage Usage</h3>
+                        <div class="storage-info">
+                            <div class="storage-bar">
+                                <div class="storage-fill" style="width: 65%"></div>
+                            </div>
+                            <div class="storage-stats">
+                                <span>2.3 GB of 3.5 GB used</span>
+                                <span>65%</span>
+                            </div>
+                        </div>
+                        
+                        <div class="storage-breakdown">
+                            <div class="storage-item">
+                                <span>News Cache</span>
+                                <span>1.2 GB</span>
+                            </div>
+                            <div class="storage-item">
+                                <span>Images</span>
+                                <span>850 MB</span>
+                            </div>
+                            <div class="storage-item">
+                                <span>User Data</span>
+                                <span>250 MB</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="setting-group">
+                        <h3>Cache Management</h3>
+                        <div class="cache-options">
+                            <label class="preference-option">
+                                <span>Auto-clear cache</span>
+                                <select id="cache-clear">
+                                    <option value="never">Never</option>
+                                    <option value="weekly" selected>Weekly</option>
+                                    <option value="monthly">Monthly</option>
+                                    <option value="3months">Every 3 months</option>
+                                </select>
+                            </label>
+                        </div>
+                        
+                        <div class="cache-actions">
+                            <button class="action-btn" id="clear-cache">
+                                <i class="fas fa-broom"></i> Clear Cache Now
+                            </button>
+                            <button class="action-btn" id="clear-images">
+                                <i class="fas fa-trash"></i> Clear Cached Images
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="setting-group">
+                        <h3>Data Saving</h3>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="data-saver">
+                            <span class="slider"></span>
+                            <span class="toggle-label">Enable data saver mode</span>
+                        </label>
+                        <p class="setting-description">Reduce image quality and limit background data usage</p>
+                    </div>
+
+                    <div class="setting-group">
+                        <h3>Offline Reading</h3>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="offline-reading" checked>
+                            <span class="slider"></span>
+                            <span class="toggle-label">Save articles for offline reading</span>
+                        </label>
+                        
+                        <div class="offline-options">
+                            <label class="preference-option">
+                                <span>Articles to save</span>
+                                <select id="offline-limit">
+                                    <option value="10">10 articles</option>
+                                    <option value="25" selected>25 articles</option>
+                                    <option value="50">50 articles</option>
+                                    <option value="100">100 articles</option>
+                                </select>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Actions -->
+        <div class="settings-actions">
+            <button class="action-btn secondary" id="reset-settings">
+                <i class="fas fa-undo"></i> Reset to Defaults
+            </button>
+            <button class="action-btn" id="save-settings">
+                <i class="fas fa-check"></i> Save All Changes
+            </button>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>AI NewsMod</h3>
+                    <p>World's first fully AI-powered news platform.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <a href="contact.html">Contact Us</a>
+                    <a href="help.html">Help Center</a>
+                    <a href="settings.html">Settings</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/settings.js"></script>
+</body>
+</html>
