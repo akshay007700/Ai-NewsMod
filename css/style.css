@@ -1921,4 +1921,10 @@ input:checked + .slider:before {
 .bar{width:4px;height:6px;background:linear-gradient(135deg,var(--primary-color),var(--secondary-color));
  border-radius:2px;opacity:.3;transition:height .2s ease,opacity .2s ease;box-shadow:0 0 8px var(--primary-color);}
 
+ #auto-refresh-indicator {
+  backdrop-filter: blur(6px);
+  letter-spacing: 0.5px;
+}
+
+
 
