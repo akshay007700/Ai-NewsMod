@@ -1,4 +1,4 @@
-// 📰 AI-NewsMod Render Engine (Final Clean Version)
+// 📰 AI-NewsMod Renderer (Clean version - NO duplicate class)
 async function renderNews(newsArray = []) {
   const container = document.getElementById("news-container");
   const countEl = document.getElementById("news-count");
@@ -16,7 +16,7 @@ async function renderNews(newsArray = []) {
 
   newsArray.forEach((item, i) => {
     const card = document.createElement("div");
-    card.className = `news-card ${item.isBreaking ? "breaking" : item.isTrending ? "trending" : ""}`;
+    card.className = "news-card";
     card.innerHTML = `
       <div class="news-header">
         <img src="${item.image}" alt="news" class="news-image">
@@ -28,9 +28,6 @@ async function renderNews(newsArray = []) {
             <span>${item.readTime || "2 min read"}</span>
           </div>
         </div>
-      </div>
-      <div class="news-tags">
-        ${(item.tags || []).map(t => `<span class="news-tag">${t}</span>`).join("")}
       </div>
       <a href="${item.url}" target="_blank" class="read-more">Read More</a>
     `;

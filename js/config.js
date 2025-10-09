@@ -1,11 +1,11 @@
-// 🧠 AI-NewsMod Configuration (Fixed Syntax, No design change)
+// 🧠 AI-NewsMod Configuration (fixed syntax)
 const CONFIG = {
   APP: {
     NAME: "AI NewsMod",
     VERSION: "2.1",
-    DEVELOPER: "Akshay",
+    DEVELOPER: "Akshay Kumar",
     THEME: { DEFAULT: "dark", ALLOW_SWITCH: true },
-    AUTO_REFRESH_INTERVAL: 900000, // 15 minutes
+    AUTO_REFRESH_INTERVAL: 900000, // 15 min
     LANGUAGE: "en"
   },
 
@@ -13,7 +13,7 @@ const CONFIG = {
     SOURCES: {
       NEWSAPI: {
         ENABLED: true,
-        BASE_URL: "https://ai-newsmod-proxy.ak0077003.workers.dev/news" // 👈Cloudflare URL
+        BASE_URL: "https://ai-newsmod-proxy.ak0077003.workers.dev/news" // 👈 replace with your Cloudflare worker URL
       }
     },
     DEFAULT_CATEGORY: "technology",
@@ -25,7 +25,7 @@ const CONFIG = {
     ENABLED: true,
     PROVIDERS: {
       OPENAI: {
-        API_KEY: "", // keys worker
+        API_KEY: "", // empty, handled via Cloudflare worker
         MODEL: "gpt-3.5-turbo",
         MAX_TOKENS: 500
       },
