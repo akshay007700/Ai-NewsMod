@@ -1,76 +1,44 @@
-// 🌩️ AI NewsMod - Cloudflare Live News Fetcher
-class NewsFetcher {
-  constructor() {
-    // 🔗 Cloudflare Worker endpoint (replace if different)
-    this.baseUrl = "https://ai-newsmod-proxy.ak0077003.workers.dev/";
+// 📰 AI-NewsMod Render Engine (Final Clean Version)
+async function renderNews(newsArray = []) {
+  const container = document.getElementById("news-container");
+  const countEl = document.getElementById("news-count");
+  const lastUpdatedEl = document.getElementById("last-updated");
+
+  if (!container) return console.error("❌ news-container not found.");
+
+  container.innerHTML = "";
+
+  if (!newsArray.length) {
+    container.innerHTML = `<p class="no-news">⚠️ No news available. Please try again later.</p>`;
+    if (countEl) countEl.textContent = "0";
+    return;
   }
 
-  async fetchAndRender(category = "technology") {
-    try {
-      this.showLoading(true);
+  newsArray.forEach((item, i) => {
+    const card = document.createElement("div");
+    card.className = `news-card ${item.isBreaking ? "breaking" : item.isTrending ? "trending" : ""}`;
+    card.innerHTML = `
+      <div class="news-header">
+        <img src="${item.image}" alt="news" class="news-image">
+        <div>
+          <h3 class="news-title">${item.title}</h3>
+          <p class="news-summary">${item.summary || ""}</p>
+          <div class="news-meta">
+            <span>${item.source || "Unknown"}</span>
+            <span>${item.readTime || "2 min read"}</span>
+          </div>
+        </div>
+      </div>
+      <div class="news-tags">
+        ${(item.tags || []).map(t => `<span class="news-tag">${t}</span>`).join("")}
+      </div>
+      <a href="${item.url}" target="_blank" class="read-more">Read More</a>
+    `;
+    container.appendChild(card);
+  });
 
-      // Fetch live news via Cloudflare proxy
-      const url = `${this.baseUrl}?category=${category}`;
-      const res = await fetch(url);
-      const data = await res.json();
+  if (countEl) countEl.textContent = newsArray.length;
+  if (lastUpdatedEl) lastUpdatedEl.textContent = new Date().toLocaleTimeString();
 
-      if (!data.articles || data.status !== "ok") {
-        throw new Error("Invalid API Response");
-      }
-
-      // Convert to internal format expected by renderNews.js
-      const processedNews = data.articles.map((a, i) => ({
-        id: `news-${i}`,
-        title: a.title || "Untitled",
-        summary: a.description || "",
-        content: a.content || "",
-        category: category.toLowerCase(),
-        source: a.source?.name || "Unknown",
-        author: a.author || "AI Reporter",
-        image: a.urlToImage || "https://via.placeholder.com/400x250?text=No+Image",
-        url: a.url,
-        publishedAt: a.publishedAt,
-        readTime: this.estimateReadTime(a.content),
-        sentiment: aiSummarizer.analyzeSentiment(a.content || a.description || ""),
-        tags: aiSummarizer.generateTags(a.title || "", a.description || ""),
-        isBreaking: Math.random() < 0.1, // randomize highlights
-        isTrending: Math.random() < 0.2
-      }));
-
-      console.log(`✅ Loaded ${processedNews.length} live news articles.`);
-      await newsRenderer.renderNews(processedNews); // 👈 integrated call
-
-    } catch (err) {
-      console.error("❌ Fetch error:", err);
-      const container = document.getElementById("news-container");
-      if (container) {
-        container.innerHTML = `<p style="text-align:center;color:#888;">Failed to load live news.</p>`;
-      }
-    } finally {
-      this.showLoading(false);
-    }
-  }
-
-  estimateReadTime(text) {
-    const words = (text || "").split(/\s+/).length;
-    const minutes = Math.max(1, Math.round(words / 200));
-    return `${minutes} min read`;
-  }
-
-  showLoading(show) {
-    const spinner = document.getElementById("loading-spinner");
-    const container = document.getElementById("news-container");
-    if (spinner && container) {
-      spinner.classList.toggle("hidden", !show);
-      container.classList.toggle("hidden", show);
-    }
-  }
+  console.log(`📰 Rendered ${newsArray.length} articles.`);
 }
-
-// Initialize fetcher
-const newsFetcher = new NewsFetcher();
-
-// Auto-load tech news on page ready
-document.addEventListener("DOMContentLoaded", () => {
-  newsFetcher.fetchAndRender("technology");
-});
