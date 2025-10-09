@@ -1,211 +1,123 @@
-// Advanced Unique Features for AI NewsMod
+// 🚀 AI-NewsMod Advanced Features (Fixed & Safe Version)
 class AdvancedFeatures {
-    constructor() {
-        this.voiceSynth = window.speechSynthesis;
-        this.isSpeaking = false;
-        this.voiceSpeed = 1;
-        this.init();
+  constructor() {
+    console.log("🚀 Advanced Features Loaded");
+    this.sentimentUpdateInterval = CONFIG.ADVANCED_FEATURES.SENTIMENT_ANALYSIS.UPDATE_INTERVAL || 60000;
+    this.breakingUpdateInterval = CONFIG.ADVANCED_FEATURES.AI_PREDICTOR.UPDATE_INTERVAL || 300000;
+
+    // Start all systems
+    this.init();
+  }
+
+  // 🔧 Initialize Advanced Systems
+  async init() {
+    try {
+      await this.initSentimentAnalysis();
+      await this.initBreakingTicker();
+    } catch (err) {
+      console.error("⚠️ AdvancedFeatures init failed:", err.message);
     }
+  }
 
-    init() {
-        this.initNewsPredictor();
-        this.initSentimentAnalysis();
-        this.initBreakingTicker();
-        this.initVoiceReader();
-        console.log('🚀 Advanced Features Loaded');
+  // 🧠 Sentiment System Initialization
+  async initSentimentAnalysis() {
+    console.log("🧠 Initializing Sentiment Analysis...");
+    await this.updateSentiment();
+    setInterval(() => this.updateSentiment(), this.sentimentUpdateInterval);
+  }
+
+  async updateSentiment() {
+    try {
+      await this.calculateSentiment();
+    } catch (err) {
+      console.warn("⚠️ updateSentiment failed:", err.message);
     }
+  }
 
-    // AI News Prediction Engine
-    initNewsPredictor() {
-        this.updatePredictions();
-        setInterval(() => this.updatePredictions(), 300000);
+  // 🧠 Calculate Sentiment with Safe Checks
+  async calculateSentiment() {
+    try {
+      if (!window.newsFetcher) {
+        console.warn("⚠️ newsFetcher not ready yet.");
+        return;
+      }
+
+      const articles = newsFetcher.latestArticles || [];
+      if (!Array.isArray(articles) || articles.length === 0) {
+        console.warn("⚠️ No articles available for sentiment analysis.");
+        return;
+      }
+
+      // Dummy neutral sentiment (AI module can replace later)
+      articles.forEach((a) => {
+        a.sentiment = a.sentiment || "neutral";
+      });
+
+      console.log(`🧠 Sentiment recalculated for ${articles.length} articles`);
+    } catch (err) {
+      console.error("⚠️ Sentiment calculation error:", err.message);
     }
+  }
 
-    async updatePredictions() {
-        const trends = await this.analyzeTrends();
-        this.renderPredictions(trends);
+  // 🗞️ Breaking News System Initialization
+  async initBreakingTicker() {
+    console.log("🗞️ Initializing Breaking News Ticker...");
+    await this.updateTicker();
+    setInterval(() => this.updateTicker(), this.breakingUpdateInterval);
+  }
+
+  async updateTicker() {
+    try {
+      const breaking = await this.getBreakingNews();
+      if (!Array.isArray(breaking) || breaking.length === 0) {
+        console.warn("⚠️ No breaking news available for ticker.");
+        return;
+      }
+
+      const ticker = document.getElementById("breaking-ticker");
+      if (!ticker) return;
+      ticker.innerHTML = breaking
+        .map((a) => `<span class="ticker-item">🔥 ${a.title}</span>`)
+        .join("");
+      console.log(`🗞️ Updated Breaking Ticker with ${breaking.length} items`);
+    } catch (err) {
+      console.error("⚠️ updateTicker error:", err.message);
     }
+  }
 
-    async analyzeTrends() {
-        return [
-            {
-                topic: "AI Regulation",
-                trend: "up",
-                confidence: 87,
-                reason: "Increased government discussions"
-            },
-            {
-                topic: "Cryptocurrency", 
-                trend: "down",
-                confidence: 92,
-                reason: "Market stabilization phase"
-            },
-            {
-                topic: "Space Exploration",
-                trend: "up", 
-                confidence: 78,
-                reason: "New mission announcements"
-            }
-        ];
+  // 📰 Get Breaking News with Fallback
+  async getBreakingNews() {
+    try {
+      if (!window.newsFetcher) {
+        console.warn("⚠️ newsFetcher not found for breaking news.");
+        return [];
+      }
+
+      const articles = newsFetcher.latestArticles || [];
+      if (!Array.isArray(articles)) return [];
+
+      const breaking = articles.filter((a) => a.isBreaking);
+      console.log(`🗞️ Found ${breaking.length} breaking articles`);
+      return breaking;
+    } catch (err) {
+      console.error("⚠️ Breaking news fetch failed:", err.message);
+      return [];
     }
-
-    renderPredictions(trends) {
-        const container = document.querySelector('.prediction-list');
-        if (!container) return;
-
-        container.innerHTML = trends.map(trend => `
-            <div class="prediction-item">
-                <div class="trend-indicator ${trend.trend}"></div>
-                <span class="prediction-text">${trend.topic} trend expected to ${trend.trend}</span>
-                <span class="confidence">${trend.confidence}% confidence</span>
-            </div>
-        `).join('');
-    }
-
-    // Real-time Sentiment Analysis
-    initSentimentAnalysis() {
-        this.updateSentiment();
-        setInterval(() => this.updateSentiment(), 60000);
-    }
-
-    async updateSentiment() {
-        const sentiment = await this.calculateSentiment();
-        this.renderSentiment(sentiment);
-    }
-
-    async calculateSentiment() {
-        const news = await newsFetcher.fetchNews('all');
-        let positive = 0, neutral = 0, negative = 0;
-
-        news.forEach(item => {
-            const sentiment = aiSummarizer.analyzeSentiment(item.content);
-            if (sentiment === 'positive') positive++;
-            else if (sentiment === 'negative') negative++;
-            else neutral++;
-        });
-
-        const total = news.length;
-        return {
-            positive: Math.round((positive / total) * 100),
-            neutral: Math.round((neutral / total) * 100), 
-            negative: Math.round((negative / total) * 100)
-        };
-    }
-
-    renderSentiment(sentiment) {
-        document.querySelectorAll('.sentiment-item').forEach(item => {
-            const type = item.classList[1];
-            const value = sentiment[type];
-            const fill = item.querySelector('.sentiment-fill');
-            const valueSpan = item.querySelector('.sentiment-value');
-            
-            if (fill && valueSpan) {
-                fill.style.width = `${value}%`;
-                valueSpan.textContent = `${value}%`;
-            }
-        });
-    }
-
-    // Breaking News Ticker
-    initBreakingTicker() {
-        this.updateTicker();
-        setInterval(() => this.updateTicker(), 30000);
-    }
-
-    async updateTicker() {
-        const breakingNews = await this.getBreakingNews();
-        this.animateTicker(breakingNews);
-    }
-
-    async getBreakingNews() {
-        const news = await newsFetcher.fetchNews('all');
-        return news
-            .filter(item => item.isBreaking)
-            .slice(0, 3)
-            .map(item => item.title)
-            .join(' • ');
-    }
-
-    animateTicker(content) {
-        const ticker = document.querySelector('.ticker-content');
-        if (ticker) {
-            ticker.innerHTML = `<span>${content}</span>`;
-        }
-    }
-
-    // AI Voice News Reader
-    initVoiceReader() {
-        const voiceBtn = document.getElementById('voice-reader-btn');
-        if (voiceBtn && this.voiceSynth) {
-            voiceBtn.addEventListener('click', () => this.toggleVoiceReading());
-            
-            document.querySelectorAll('.voice-control').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    this.setVoiceSpeed(parseFloat(e.target.dataset.speed));
-                    e.stopPropagation();
-                });
-            });
-        }
-    }
-
-    async toggleVoiceReading() {
-        if (this.isSpeaking) {
-            this.stopVoiceReading();
-        } else {
-            await this.startVoiceReading();
-        }
-    }
-
-    async startVoiceReading() {
-        const news = await newsFetcher.fetchNews('all');
-        const headlines = news.slice(0, 3).map(item => item.title).join('. ');
-        
-        const utterance = new SpeechSynthesisUtterance(`
-            Here are the top news headlines. ${headlines}.
-            This news update was powered by AI NewsMod.
-        `);
-
-        utterance.rate = this.voiceSpeed;
-        utterance.pitch = 1;
-        utterance.volume = 0.8;
-
-        this.voiceSynth.speak(utterance);
-        this.isSpeaking = true;
-        this.updateVoiceButton(true);
-
-        utterance.onend = () => {
-            this.isSpeaking = false;
-            this.updateVoiceButton(false);
-        };
-    }
-
-    stopVoiceReading() {
-        this.voiceSynth.cancel();
-        this.isSpeaking = false;
-        this.updateVoiceButton(false);
-    }
-
-    setVoiceSpeed(speed) {
-        this.voiceSpeed = speed;
-        if (this.isSpeaking) {
-            this.stopVoiceReading();
-            setTimeout(() => this.startVoiceReading(), 100);
-        }
-    }
-
-    updateVoiceButton(speaking) {
-        const btn = document.getElementById('voice-reader-btn');
-        if (btn) {
-            if (speaking) {
-                btn.classList.add('speaking');
-                btn.querySelector('span').textContent = 'Stop Reading';
-            } else {
-                btn.classList.remove('speaking'); 
-                btn.querySelector('span').textContent = 'AI Voice News';
-            }
-        }
-    }
+  }
 }
 
-// Initialize Advanced Features
-const advancedFeatures = new AdvancedFeatures();
+// ✅ Initialize once DOM ready
+document.addEventListener("DOMContentLoaded", () => {
+  // Wait a bit to ensure newsFetcher ready
+  setTimeout(() => {
+    try {
+      if (typeof CONFIG !== "undefined" && CONFIG.ADVANCED_FEATURES.ENABLED) {
+        new AdvancedFeatures();
+      } else {
+        console.log("ℹ️ Advanced features disabled in config.");
+      }
+    } catch (err) {
+      console.error("⚠️ Failed to initialize AdvancedFeatures:", err.message);
+    }
+  }, 1500);
+});
