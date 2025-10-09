@@ -17,7 +17,7 @@ const CONFIG = {
     SOURCES: {
       NEWSAPI: {
         ENABLED: true,
-        BASE_URL: "https://ai-newsmod-proxy.ak0077003.workers.dev/news" // 👈 replace this with your actual Cloudflare Worker URL
+        BASE_URL: "https://ai-newsmod-proxy.ak0077003.workers.dev/news"
       }
     },
     DEFAULT_CATEGORY: "technology",
@@ -30,7 +30,7 @@ const CONFIG = {
     ENABLED: true,
     PROVIDERS: {
       OPENAI: {
-        API_KEY: "", // keys handled via Cloudflare worker (keep empty)
+        API_KEY: "",
         MODEL: "gpt-3.5-turbo",
         MAX_TOKENS: 500
       },
@@ -67,5 +67,9 @@ const CONFIG = {
   }
 };
 
-// ✅ Debug log to confirm loaded
+// ✅ Make it globally available
+if (typeof window !== 'undefined') {
+  window.CONFIG = CONFIG;
+}
+
 console.log("🧩 CONFIG loaded successfully:", CONFIG.APP.NAME, "v" + CONFIG.APP.VERSION);

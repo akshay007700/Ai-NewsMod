@@ -1,152 +1,185 @@
-// 🌩️ AI-NewsMod News Fetcher (Final Stable Version)
-// Compatible with AdvancedFeatures + Offline Cache + Cloudflare Proxy
-
+// 🌩️ AI-NewsMod News Fetcher
 class NewsFetcher {
   constructor() {
+    if (typeof CONFIG === 'undefined') {
+      throw new Error('CONFIG not loaded');
+    }
     this.baseUrl = CONFIG.NEWS.SOURCES.NEWSAPI.BASE_URL;
     this.defaultCategory = CONFIG.NEWS.DEFAULT_CATEGORY;
-    this.refreshInterval = CONFIG.APP.AUTO_REFRESH_INTERVAL || 900000; // 15 minutes
-    this.latestArticles = []; // store latest articles for advancedFeatures
+    this.refreshInterval = CONFIG.APP.AUTO_REFRESH_INTERVAL || 900000;
+    this.currentNews = [];
   }
 
-  // 📰 Fetch and render latest news
   async fetchNews(category = this.defaultCategory, silent = false) {
     try {
       if (!silent) this.showLoading(true);
-      console.log(`📰 Fetching category: ${category}`);
 
       const url = `${this.baseUrl}?category=${category}`;
+      console.log('🌐 Fetching from:', url);
+      
       const res = await fetch(url);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      
       const data = await res.json();
 
-      if (!data.articles || data.status !== "ok") {
-        throw new Error("Invalid API response");
+      // Handle different response formats
+      let articles = [];
+      if (data.articles && Array.isArray(data.articles)) {
+        articles = data.articles;
+      } else if (Array.isArray(data)) {
+        articles = data;
+      } else {
+        throw new Error("Invalid API response format");
       }
 
-      const processed = data.articles.map((a, i) => ({
-        id: `news-${i}`,
+      const processed = articles.map((a, i) => ({
+        id: `news-${Date.now()}-${i}`,
         title: a.title || "Untitled",
-        summary: a.description || "",
-        content: a.content || "",
-        category,
-        source: a.source?.name || "Unknown",
-        author: a.author || "AI Reporter",
-        image: a.urlToImage || "https://via.placeholder.com/400x250?text=No+Image",
-        url: a.url,
-        publishedAt: a.publishedAt || new Date().toISOString(),
-        readTime: this.calcReadTime(a.content),
-        isBreaking: Math.random() < 0.1,
-        isTrending: Math.random() < 0.2
+        summary: a.description || a.summary || "",
+        source: a.source?.name || a.source || "Unknown",
+        image: a.urlToImage || a.image || "https://via.placeholder.com/400x250/374151/FFFFFF?text=No+Image",
+        url: a.url || "#",
+        readTime: this.calcReadTime(a.content || a.description),
+        content: a.content || a.description || "",
+        isBreaking: Math.random() > 0.8
       }));
 
-      // 🗃️ Save latest data globally
-      this.latestArticles = processed;
-
-      // 🗃️ Cache news locally for offline use
-      localStorage.setItem("cachedNews", JSON.stringify({
-        timestamp: Date.now(),
-        category,
-        articles: processed
-      }));
-
-      // ✅ Render on screen
-      await renderNews(processed);
+      this.currentNews = processed;
+      await this.renderNews(processed);
       this.updateStats(processed.length);
 
-      console.log(`✅ Loaded and rendered ${processed.length} articles.`);
+      return processed;
 
     } catch (err) {
       console.warn("⚠️ Fetch error:", err.message);
-      await this.loadCachedNews();
+      // Fallback to sample data
+      const sampleNews = this.getSampleNews();
+      this.currentNews = sampleNews;
+      await this.renderNews(sampleNews);
+      this.updateStats(sampleNews.length);
+      return sampleNews;
     } finally {
       if (!silent) this.showLoading(false);
     }
   }
 
-  // 🗃️ Load cached news if offline
-  async loadCachedNews() {
-    const cache = localStorage.getItem("cachedNews");
-    if (cache) {
-      const data = JSON.parse(cache);
-      console.log("📦 Loaded cached news from localStorage.");
-      this.latestArticles = data.articles || [];
-      await renderNews(this.latestArticles);
-      this.updateStats(this.latestArticles.length);
-    } else {
-      const container = document.getElementById("news-container");
-      if (container)
-        container.innerHTML = `<p style="text-align:center;color:#888;">⚠️ You're offline and no cached news found.</p>`;
+  async renderNews(newsArray) {
+    const container = document.getElementById("news-container");
+    if (!container) {
+      console.error("❌ news-container not found");
+      return;
     }
+
+    container.innerHTML = "";
+
+    if (!newsArray.length) {
+      container.innerHTML = `<p class="no-news">⚠️ No news available. Please try again later.</p>`;
+      return;
+    }
+
+    newsArray.forEach((item) => {
+      const card = document.createElement("div");
+      card.className = `news-card ${item.isBreaking ? 'breaking' : ''}`;
+      card.innerHTML = `
+        ${item.isBreaking ? '<div class="breaking-badge">BREAKING</div>' : ''}
+        <div class="news-header">
+          <img src="${item.image}" alt="news" class="news-image" onerror="this.src='https://via.placeholder.com/400x250/374151/FFFFFF?text=No+Image'">
+          <div class="news-content">
+            <h3 class="news-title">${item.title}</h3>
+            <p class="news-summary">${item.summary || "No summary available."}</p>
+            <div class="news-meta">
+              <span class="source">${item.source}</span>
+              <span class="read-time">${item.readTime}</span>
+            </div>
+          </div>
+        </div>
+        <a href="${item.url}" target="_blank" class="read-more">Read More →</a>
+      `;
+      container.appendChild(card);
+    });
+
+    console.log(`📰 Rendered ${newsArray.length} articles.`);
   }
 
-  // 📊 Update article count + last updated time
+  getSampleNews() {
+    return [
+      {
+        id: `sample-${Date.now()}-1`,
+        title: "AI Technology Advances Rapidly in 2024",
+        summary: "New breakthroughs in artificial intelligence are transforming industries worldwide with unprecedented speed.",
+        source: "Tech News",
+        image: "https://via.placeholder.com/400x250/2563eb/FFFFFF?text=AI+News",
+        url: "#",
+        readTime: "3 min read",
+        content: "Detailed content about AI advancements...",
+        isBreaking: true
+      },
+      {
+        id: `sample-${Date.now()}-2`,
+        title: "Global Markets Show Positive Trends",
+        summary: "Economic indicators suggest strong growth in technology and renewable energy sectors.",
+        source: "Business Daily",
+        image: "https://via.placeholder.com/400x250/10b981/FFFFFF?text=Business",
+        url: "#",
+        readTime: "2 min read",
+        content: "Market analysis and trends...",
+        isBreaking: false
+      }
+    ];
+  }
+
+  showLoading(show) {
+    const spinner = document.getElementById("loading-spinner");
+    const container = document.getElementById("news-container");
+    if (spinner) spinner.style.display = show ? "block" : "none";
+    if (container) container.style.display = show ? "none" : "block";
+  }
+
   updateStats(count) {
     const countEl = document.getElementById("news-count");
     const lastUpdatedEl = document.getElementById("last-updated");
     if (countEl) countEl.textContent = count;
-    if (lastUpdatedEl)
-      lastUpdatedEl.textContent = new Date().toLocaleTimeString();
+    if (lastUpdatedEl) lastUpdatedEl.textContent = new Date().toLocaleTimeString();
   }
 
-  // ⏳ Calculate estimated read time
   calcReadTime(text) {
     const words = (text || "").split(/\s+/).length;
     return `${Math.max(1, Math.round(words / 200))} min read`;
   }
 
-  // 🌀 Show loading spinner
-  showLoading(show) {
-    const spinner = document.getElementById("loading-spinner");
-    const container = document.getElementById("news-container");
-    if (spinner && container) {
-      spinner.classList.toggle("hidden", !show);
-      container.classList.toggle("hidden", show);
-    }
-  }
-
-  // 🔄 Auto refresh every X minutes
   startAutoRefresh(category = this.defaultCategory) {
-    console.log(`🔁 Auto-refresh enabled every ${this.refreshInterval / 60000} minutes`);
     setInterval(() => {
-      console.log("🔁 Refresh triggered...");
       this.fetchNews(category, true);
-      this.showRefreshIndicator();
     }, this.refreshInterval);
   }
 
-  // 🕒 Visual refresh indicator
-  showRefreshIndicator() {
-    let indicator = document.getElementById("auto-refresh-indicator");
-    if (!indicator) {
-      indicator = document.createElement("div");
-      indicator.id = "auto-refresh-indicator";
-      indicator.textContent = "🕒 Headlines refreshed just now";
-      indicator.classList.add("fade-in");
-      document.body.appendChild(indicator);
-      indicator.style.cssText =
-        "position:fixed;bottom:25px;right:25px;background:linear-gradient(135deg,#2563eb,#9333ea);color:white;padding:8px 16px;border-radius:8px;font-size:14px;font-weight:500;box-shadow:0 0 12px rgba(37,99,235,0.3);opacity:0;transition:opacity .5s ease;z-index:9999;";
-    }
+  // Helper methods for other features
+  getCurrentNews() {
+    return this.currentNews;
+  }
 
-    indicator.style.opacity = "1";
-    setTimeout(() => {
-      indicator.style.opacity = "0";
-    }, 3000);
+  getBreakingNews() {
+    return this.currentNews.filter(item => item.isBreaking);
+  }
 
-    // Optional Voice Feedback
-    if (CONFIG.VOICE_ASSISTANT && CONFIG.VOICE_ASSISTANT.ENABLED && window.speechSynthesis) {
-      const msg = new SpeechSynthesisUtterance("Sir, the latest headlines have been refreshed.");
-      msg.lang = CONFIG.VOICE_ASSISTANT.DEFAULT_VOICE || "en-US";
-      msg.rate = CONFIG.VOICE_ASSISTANT.SPEED || 1;
-      window.speechSynthesis.speak(msg);
-    }
+  searchNews(query) {
+    const lowerQuery = query.toLowerCase();
+    return this.currentNews.filter(item => 
+      item.title.toLowerCase().includes(lowerQuery) ||
+      item.summary.toLowerCase().includes(lowerQuery)
+    );
   }
 }
 
-// ✅ Initialize newsFetcher globally
-const newsFetcher = new NewsFetcher();
-
+// Initialize only after DOM is ready
+let newsFetcher;
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("📰 Initializing NewsFetcher...");
-  newsFetcher.fetchNews(CONFIG.NEWS.DEFAULT_CATEGORY);
-  newsFetcher.startAutoRefresh(CONFIG.NEWS.DEFAULT_CATEGORY);
+  newsFetcher = new NewsFetcher();
+  window.newsFetcher = newsFetcher;
+  
+  // Initial load
+  if (typeof CONFIG !== 'undefined') {
+    newsFetcher.fetchNews(CONFIG.NEWS.DEFAULT_CATEGORY);
+    newsFetcher.startAutoRefresh(CONFIG.NEWS.DEFAULT_CATEGORY);
+  }
 });
